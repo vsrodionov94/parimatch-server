@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-
+const routes = require('./routes/index');
 require('dotenv').config();
 
 const { PORT, NODE_ENV, DB_LINK } = process.env;
@@ -21,7 +21,6 @@ mongoose.connect(dbLink, {
   useUnifiedTopology: true,
 });
 
-
 app.listen(NODE_ENV === 'production' ? PORT : 3000, () => {
-  console.log('123')
+  routes(app);
 });
