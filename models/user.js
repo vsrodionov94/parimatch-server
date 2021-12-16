@@ -12,12 +12,10 @@ const userSchema = new mongoose.Schema({
   },
   questions: {
     type: [{
-      type: {
-        id: Number,
-        answered: Boolean,
-        position: Number,
-        correctly: Boolean,
-      },
+      id: Number,
+      answered: Boolean,
+      position: Number,
+      correctly: Boolean,
     }],
     default: [],
   },
