@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   correctAnswers: {
     type: Number,
     required: true,
+    default: 0,
   },
   questions: {
     type: [{
@@ -24,11 +25,10 @@ const userSchema = new mongoose.Schema({
     default: false,
     required: true,
   },
-  time: {
+  lastDay: {
     type: Number,
     default: 0,
   },
-
 });
 
 module.exports = mongoose.model('user', userSchema);

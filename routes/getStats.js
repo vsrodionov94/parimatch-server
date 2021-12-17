@@ -7,7 +7,7 @@ module.exports = app => {
     const usersData = await Users.find({}, {
       _id: 0,
       __v: 0,
-      correctAnswers: 0,
+      lastDay: 0,
       questions: 0,
       tutorial: 0,
       time: 0,

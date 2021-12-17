@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const incQuestionsCount = require('../functions/incQuestionsCount');
+const Statistics = require('../classes/Statistics');
 
 module.exports = app => {
   app.post('/tryAnswer', async (req, res) => {
@@ -11,9 +11,10 @@ module.exports = app => {
       if (question) {
         question.answered = true;
         question.correctly = answer;
-        user.time = Math.round(new Date().getTime() / 1000);
+        if (answer) user.correctAnswers += 1;
+
         user.save();
-        incQuestionsCount();
+        Statistics.incQuestionsCount();
       } else error = true;
     } else error = true;
     res.json({ error });
