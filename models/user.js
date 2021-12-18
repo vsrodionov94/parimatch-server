@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema({
     type: [{
       id: Number,
       answered: Boolean,
-      position: Number,
       correctly: Boolean,
     }],
     default: [],

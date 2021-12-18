@@ -1,8 +1,7 @@
 module.exports = class Question {
-  constructor(id, position, answered = false, correctly = false) {
+  constructor(id, answered = false) {
     this.id = id;
-    this.position = position;
     this.answered = answered;
-    this.correctly = correctly;
+    this.correctly = false;
   }
 };

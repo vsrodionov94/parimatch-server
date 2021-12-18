@@ -13,6 +13,19 @@ const getRandomQuestionId = questions => {
   return getRandomQuestionId(newQuestions);
 };
 
+const addThreeQuestions = (questions, answered = false) => {
+  for (let i = 0; i < 3; i += 1) {
+    const id = getRandomQuestionId(questions);
+    questions.push(new Question(id, answered));
+  }
+};
+
+const setAnsweredOldQuestions = questions => {
+  questions.forEach(quest => {
+    quest.answered = true;
+  });
+};
+
 module.exports = app => {
   app.post('/checkUser', async (req, res) => {
     const { vkId } = req.body;
@@ -22,56 +35,36 @@ module.exports = app => {
     };
 
     const user = await User.findOne({ vkId }).then(data => data);
-    const deltaTime = new Date().getTime() - process.env.START_DAY;
+    const currentTime = new Date().getTime();
+    const deltaTime = currentTime - process.env.START_DAY;
     const currentDay = Math.floor(deltaTime / ONE_DAY);
-
+    if (currentTime > process.env.END_DAY) res.json({});
     if (user) {
       result.tutorial = user.tutorial;
-      const offlineDays = user.lastDay - currentDay;
-
+      const offlineDays = currentDay - user.lastDay;
       const questions = [...user.questions];
       if (offlineDays === 1) {
-        const lastIndex = questions.length;
-        for (let i = lastIndex; i <= lastIndex + 3; i += 1) {
-          const id = getRandomQuestionId(questions);
-          const position = i;
-          result.questions.push(new Question(id, position));
-        }
+        setAnsweredOldQuestions(questions);
+        addThreeQuestions(questions);
       } else if (offlineDays > 1) {
-        const lastIndex = questions.length;
-        for (let i = lastIndex; i < lastIndex + currentDay; i += 1) {
-          for (let j = 1; j <= 3; j += 1) {
-            const id = getRandomQuestionId(questions);
-            const position = i + j;
-            result.questions.push(new Question(id, position, true));
-          }
+        setAnsweredOldQuestions(questions);
+        for (let i = 0; i < currentDay; i += 1) {
+          addThreeQuestions(questions, true);
         }
-        for (let i = 1; i <= 3; i += 1) {
-          const id = getRandomQuestionId(questions);
-          const position = i;
-          result.questions.push(new Question(id, position));
-        }
+        addThreeQuestions(questions);
       }
-      user.updateOne({ vkId }, { $set: { lastDay: currentDay, questions: questions } })
+
+      User.updateOne({ vkId }, { $set: { lastDay: currentDay, questions: questions } })
         .then(() => null);
       result.questions = questions;
     } else {
       const questions = [];
       if (currentDay > 0) {
         for (let i = 0; i < currentDay; i += 1) {
-          for (let j = 1; j <= 3; j += 1) {
-            const id = getRandomQuestionId(questions);
-            const position = i + j;
-            result.questions.push(new Question(id, position, true));
-          }
+          addThreeQuestions(questions, true);
         }
       }
-      const lastIndex = questions.length;
-      for (let i = lastIndex; i <= lastIndex + 3; i += 1) {
-        const id = getRandomQuestionId(questions);
-        const position = i;
-        result.questions.push(new Question(id, position));
-      }
+      addThreeQuestions(questions);
       User.create({ vkId: vkId, lastDay: currentDay, questions: questions }).then(data => {
         Statistics.incUsersCount();
         return data;
