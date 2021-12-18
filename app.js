@@ -22,7 +22,7 @@ mongoose.connect(dbLink, {
   useUnifiedTopology: true,
 });
 
-app.listen(NODE_ENV === 'production' ? PORT : 3000, () => {
+app.listen(NODE_ENV === 'production' ? PORT : 4000, () => {
   migration();
   routes(app);
 });
