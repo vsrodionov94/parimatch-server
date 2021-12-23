@@ -29,7 +29,7 @@ const compositeImage = async questions => {
 
 const loadImage = async (url, image) => {
   const formData = new FormData();
-  formData.append('photo', image, 'image.png');
+  formData.append('file1', image, 'image.png');
 
   const response = await axios.post(url, formData, {
     headers: {
