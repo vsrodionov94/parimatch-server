@@ -60,6 +60,6 @@ module.exports = app => {
       } else result.error = true;
     } else result.error = true;
 
-    res.json(result);
+    // res.json(result);
   });
 };
