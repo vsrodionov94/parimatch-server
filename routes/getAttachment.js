@@ -36,9 +36,13 @@ const compositeImage = async questions => {
 
 const loadImage = async (url, image) => {
   const formData = new FormData();
-  formData.append('file1', image, 'file1.png');
+  formData.append('file1', image, 'image.png');
 
-  const response = await axios.post(url, formData);
+  const response = await axios.post(url, formData, {
+    headers: {
+      'Content-Type': `multipart/form-data; boundary=${formData.getBoundary()}`,
+    },
+  });
   return response.data;
 };
 
