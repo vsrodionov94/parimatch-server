@@ -1,4 +1,4 @@
-// const fs = require('fs');
+const fs = require('fs');
 const sharp = require('sharp');
 const axios = require('axios');
 const FormData = require('form-data');
@@ -8,14 +8,14 @@ const getImagesArray = array => {
   const images = [];
   for (let i = 0; i < array.length; i += 1) {
     if (array[i] && array[i].correctly) {
-      images.push({ input: `../images/${i}.png` });
+      images.push({ input: fs.readFileSync(`../images/${i}.png`) });
     }
   }
   return images;
 };
 
 const compositeImage = async questions => {
-  const base = '../images/base.png';
+  const base = fs.readFileSync('../images/base.png');
   const images = getImagesArray(questions);
   try {
     return await sharp(base)
