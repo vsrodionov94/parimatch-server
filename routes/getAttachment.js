@@ -47,7 +47,6 @@ module.exports = app => {
 
     const user = await User.findOne({ vkId }).then(found => found);
     if (user) {
-      console.log(user);
       const image = await compositeImage(user.questions);
       if (image) {
         const response = await loadImage(url, image);
