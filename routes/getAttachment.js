@@ -34,6 +34,7 @@ const getUrl = async token => {
   const ver = '5.131';
 
   const response = await axios.get(`https://api.vk.com/method/${method}?access_token=${token}&group_id=${GROUP_ID}&album_id=${ALBUM_ID}&v=${ver}`);
+  console.log(response.data);
   return response.data.response.upload_url;
 };
 
