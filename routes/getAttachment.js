@@ -67,26 +67,17 @@ module.exports = app => {
   app.post('/getAttachment', async (req, res) => {
     const result = { error: false, attachment: '' };
 
-    const { vkId, token } = req.body;
+    const { vkId, url } = req.body;
 
     const user = User.findOne({ vkId }).then(found => found);
     if (user) {
-      const url = await getUrl(token);
-      console.log('url', url);
-      if (url) {
-        const image = await compositeImage();
-        console.log('image', image);
-        if (image) {
-          const response = await loadImage(url, image);
-          console.log('response', response);
-          if (response) {
-            const attachment = await saveImage(response, token);
-            console.log('attachment', attachment);
-            if (attachment) {
-              const { album_id: albumId, id } = attachment;
-              result.attachment = `photo-${albumId}_${id}`;
-            } else result.error = true;
-          } else result.error = true;
+      const image = await compositeImage();
+      console.log('image', image);
+      if (image) {
+        const response = await loadImage(url, image);
+        console.log('response', response);
+        if (response) {
+          res.json(response);
         } else result.error = true;
       } else result.error = true;
     } else result.error = true;
