@@ -15,7 +15,7 @@ const getImagesArray = array => {
 };
 
 const compositeImage = async questions => {
-  const base = fs.readFileSync(`${__dirname}../images/base.png`);
+  const base = fs.readFileSync(`${__dirname}/images/base.png`);
   const images = getImagesArray(questions);
   try {
     return await sharp(base)
