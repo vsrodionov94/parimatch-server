@@ -8,7 +8,7 @@ const getImagesArray = array => {
   const images = [];
   for (let i = 0; i < array.length; i += 1) {
     if (array[i] && array[i].correctly) {
-      images.push({ input: fs.readFileSync(`../images/${i}.png`) });
+      // images.push({ input: fs.readFileSync(`../images/${i}.png`) });
     }
   }
   return images;
