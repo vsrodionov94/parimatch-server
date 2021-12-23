@@ -15,10 +15,17 @@ const getImagesArray = array => {
 };
 
 const compositeImage = async questions => {
-  // const base = fs.readFileSync(`${__dirname}/images/base.png`);
+  const base = fs.readFileSync(`${__dirname}/base.png`);
   const images = getImagesArray(questions);
   try {
-    return await sharp(`${__dirname}/images/base.png`)
+    return sharp({
+      create: {
+        width: 300,
+        height: 200,
+        channels: 4,
+        background: { r: 255, g: 0, b: 0, alpha: 0.5 }
+      }
+    })
       .composite(images)
       .toBuffer();
   } catch (error) {
