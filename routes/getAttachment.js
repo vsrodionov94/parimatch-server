@@ -71,12 +71,16 @@ module.exports = app => {
     const user = User.findOne({ vkId }).then(found => found);
     if (user) {
       const url = await getUrl(token);
+      console.log('url', url);
       if (url) {
         const image = await compositeImage();
+        console.log('image', image);
         if (image) {
           const response = await loadImage(url, image);
+          console.log('response', response);
           if (response) {
             const attachment = await saveImage(response, token);
+            console.log('attachment', attachment);
             if (attachment) {
               const { album_id: albumId, id } = attachment;
               result.attachment = `photo-${albumId}_${id}`;
