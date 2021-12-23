@@ -71,10 +71,10 @@ module.exports = app => {
 
     const user = User.findOne({ vkId }).then(found => found);
     if (user) {
-      const image = await compositeImage();
-      console.log('image', image);
-      if (image) {
-        const response = await loadImage(url, image);
+      // const image = await compositeImage();
+      // console.log('image', image);
+      if (true) {
+        const response = await loadImage(url, '');
         console.log('response', response);
         if (response) {
           res.json(response);
