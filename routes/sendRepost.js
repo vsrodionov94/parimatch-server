@@ -3,9 +3,9 @@ const User = require('../models/user');
 
 module.exports = app => {
   app.post('/sendRepost', (req, res) => {
-    const { vkId, repostId } = req.body;
+    const { vkId, postId } = req.body;
     console.log(req.body);
-    User.updateOne({ vkId }, { $set: { lastRepost: repostId } }).then(() => null);
+    User.updateOne({ vkId }, { $set: { lastRepost: postId } }).then(() => null);
     Statistics.incRepostsCount();
     res.json({ error: false });
   });
