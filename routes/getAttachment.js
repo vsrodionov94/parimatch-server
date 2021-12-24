@@ -8,24 +8,17 @@ const getImagesArray = array => {
   const images = [];
   for (let i = 0; i < array.length; i += 1) {
     if (array[i] && array[i].correctly) {
-      // images.push({ input: fs.readFileSync(`../images/${i}.png`) });
+      images.push({ input: fs.readFileSync(`${__dirname}/images/${i}.png`) });
     }
   }
   return images;
 };
 
 const compositeImage = async questions => {
-  // const base = fs.readFileSync(`${__dirname}/base.png`);
+  const base = fs.readFileSync(`${__dirname}/base.png`);
   const images = getImagesArray(questions);
   try {
-    return sharp({
-      create: {
-        width: 300,
-        height: 200,
-        channels: 4,
-        background: { r: 255, g: 0, b: 0, alpha: 0.5 }
-      }
-    })
+    return sharp(base)
       .composite(images)
       .toBuffer();
   } catch (error) {
@@ -36,7 +29,7 @@ const compositeImage = async questions => {
 
 const loadImage = async (url, image) => {
   const formData = new FormData();
-  formData.append('file1', image, 'image.png');
+  formData.append('photo', image, 'image.png');
 
   const response = await axios.post(url, formData, {
     headers: {
