@@ -41,7 +41,7 @@ const loadImage = async (url, image) => {
 
 module.exports = app => {
   app.post('/getAttachment', async (req, res) => {
-    const result = { error: false, attachment: '' };
+    let response;
 
     const { vkId, url } = req.body;
 
@@ -49,14 +49,9 @@ module.exports = app => {
     if (user) {
       const image = await compositeImage(user.questions);
       if (image) {
-        const response = await loadImage(url, image);
-        console.log('response', response);
-        if (response) {
-          res.json(response);
-        } else result.error = true;
-      } else result.error = true;
-    } else result.error = true;
-
-    // res.json(result);
+        response = await loadImage(url, image);
+      }
+    }
+    res.json(response);
   });
 };

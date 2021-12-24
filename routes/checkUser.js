@@ -3,11 +3,12 @@ const Statistics = require('../classes/Statistics');
 const Question = require('../classes/Question');
 
 const ONE_DAY = 86400 * 1000;
+const MAX_LENGTH = 36;
 
 const randomInt = (min, max) => Math.round(Math.random() * (max - min) + min);
 
 const getRandomQuestionId = questions => {
-  const id = randomInt(1, 36);
+  const id = randomInt(1, MAX_LENGTH);
   if (questions.length <= 0 || questions.every(el => el.id !== id)) return id;
   const newQuestions = questions.filter(el => el.id !== id);
   return getRandomQuestionId(newQuestions);
@@ -15,6 +16,7 @@ const getRandomQuestionId = questions => {
 
 const addThreeQuestions = (questions, answered = false) => {
   for (let i = 0; i < 3; i += 1) {
+    if (questions.length > MAX_LENGTH) break;
     const id = getRandomQuestionId(questions);
     questions.push(new Question(id, answered));
   }
@@ -43,15 +45,17 @@ module.exports = app => {
       result.tutorial = user.tutorial;
       const offlineDays = currentDay - user.lastDay;
       const questions = [...user.questions];
-      if (offlineDays === 1) {
-        setAnsweredOldQuestions(questions);
-        addThreeQuestions(questions);
-      } else if (offlineDays > 1) {
-        setAnsweredOldQuestions(questions);
-        for (let i = 0; i < currentDay; i += 1) {
-          addThreeQuestions(questions, true);
+      if (questions.length < MAX_LENGTH) {
+        if (offlineDays === 1) {
+          setAnsweredOldQuestions(questions);
+          addThreeQuestions(questions);
+        } else if (offlineDays > 1) {
+          setAnsweredOldQuestions(questions);
+          for (let i = 0; i < currentDay; i += 1) {
+            addThreeQuestions(questions, true);
+          }
+          addThreeQuestions(questions);
         }
-        addThreeQuestions(questions);
       }
 
       User.updateOne({ vkId }, { $set: { lastDay: currentDay, questions: questions } })
@@ -61,6 +65,7 @@ module.exports = app => {
       const questions = [];
       if (currentDay > 0) {
         for (let i = 0; i < currentDay; i += 1) {
+          if (questions.length > MAX_LENGTH) break;
           addThreeQuestions(questions, true);
         }
       }
