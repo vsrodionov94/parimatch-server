@@ -6,6 +6,6 @@ module.exports = app => {
     const { vkId, repostId } = req.body;
     User.updateOne({ vkId }, { $set: { lastRepost: repostId } }).then(() => null);
     Statistics.incRepostsCount();
-    res.json();
+    res.json({ error: false });
   });
 };
