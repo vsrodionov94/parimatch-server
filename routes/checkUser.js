@@ -16,7 +16,7 @@ const getRandomQuestionId = questions => {
 
 const addThreeQuestions = (questions, answered = false) => {
   for (let i = 0; i < 3; i += 1) {
-    if (questions.length > MAX_LENGTH) break;
+    if (questions.length >= MAX_LENGTH) break;
     const id = getRandomQuestionId(questions);
     questions.push(new Question(id, answered));
   }
@@ -65,7 +65,7 @@ module.exports = app => {
       const questions = [];
       if (currentDay > 0) {
         for (let i = 0; i < currentDay; i += 1) {
-          if (questions.length > MAX_LENGTH) break;
+          if (questions.length >= MAX_LENGTH) break;
           addThreeQuestions(questions, true);
         }
       }
