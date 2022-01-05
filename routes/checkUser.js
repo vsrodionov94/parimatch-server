@@ -55,10 +55,7 @@ module.exports = app => {
             addThreeQuestions(questions, true);
           }
           addThreeQuestions(questions);
-        } else {
-          console.log(offlineDays);
         }
-        console.log(offlineDays);
       }
 
       User.updateOne({ vkId }, { $set: { lastDay: currentDay, questions: questions } })
