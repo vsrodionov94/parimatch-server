@@ -51,7 +51,7 @@ module.exports = app => {
           addThreeQuestions(questions);
         } else if (offlineDays > 1) {
           setAnsweredOldQuestions(questions);
-          for (let i = 0; i < currentDay; i += 1) {
+          for (let i = 0; i < offlineDays - 1; i += 1) {
             addThreeQuestions(questions, true);
           }
           addThreeQuestions(questions);
