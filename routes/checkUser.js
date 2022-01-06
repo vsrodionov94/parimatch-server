@@ -44,7 +44,7 @@ module.exports = app => {
     if (user) {
       result.tutorial = user.tutorial;
       const offlineDays = currentDay - user.lastDay;
-      const questions = [...user.questions.slice(0, currentDay * 3)];
+      const questions = [...user.questions.slice(0, user.lastDay * 3)];
       if (questions.length < MAX_LENGTH) {
         if (offlineDays === 1) {
           setAnsweredOldQuestions(questions);
