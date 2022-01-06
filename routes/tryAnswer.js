@@ -7,7 +7,7 @@ module.exports = app => {
     let error = false;
     const user = await User.findOne({ vkId }).then(data => data);
     if (user) {
-      const question = user.questions.find(el => el.id === questionId);
+      const question = user.questions.find(el => el.id === questionId && !el.answered);
       if (question) {
         question.answered = true;
         question.correctly = answer;
