@@ -40,7 +40,12 @@ module.exports = app => {
     const currentTime = new Date().getTime();
     const deltaTime = currentTime - process.env.START_DAY;
     const currentDay = Math.floor(deltaTime / ONE_DAY);
-    if (currentTime > process.env.END_DAY || currentTime < process.env.START_DAY) res.json(result);
+    if (currentTime > process.env.END_DAY || currentTime < process.env.START_DAY) {
+      if (user) {
+        res.json({ questions: user.questions, tutorial: false });
+      }
+      res.json(result);
+    }
     if (user) {
       result.tutorial = user.tutorial;
       const offlineDays = currentDay - user.lastDay;
